@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1566753834 source:c:\users\junio\documents\trô-3°-ano\programations\c segundo terceiro ano\pegando onda kkj\trabalho_da_ondinha\pegando_onda.c
+	<stdlib.h>
+	<stdio.h>
+	<conio.h>
+	<string.h>
+	<locale.h>
+	<string.h>
+
