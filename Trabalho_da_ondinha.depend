@@ -1,9 +1,26 @@
 # depslib dependency file v1.0
-1566753834 source:c:\users\junio\documents\trô-3°-ano\programations\c segundo terceiro ano\pegando onda kkj\trabalho_da_ondinha\pegando_onda.c
+1567286322 source:c:\users\junio\documents\trô-3°-ano\programations\c segundo terceiro ano\pegando onda kkj\trabalho_da_ondinha\pegando_onda.c
 	<stdlib.h>
 	<stdio.h>
 	<conio.h>
 	<string.h>
 	<locale.h>
 	<string.h>
+
+1564658068 c:\program files (x86)\fmod soundsystem\fmod studio api windows\api\core\inc\fmod.h
+	"fmod_common.h"
+
+1564658068 c:\program files (x86)\fmod soundsystem\fmod studio api windows\api\core\inc\fmod_common.h
+	"fmod_codec.h"
+	"fmod_dsp.h"
+	"fmod_output.h"
+
+1564658068 c:\program files (x86)\fmod soundsystem\fmod studio api windows\api\core\inc\fmod_codec.h
+
+1564658068 c:\program files (x86)\fmod soundsystem\fmod studio api windows\api\core\inc\fmod_dsp.h
+	"fmod_dsp_effects.h"
+
+1564658068 c:\program files (x86)\fmod soundsystem\fmod studio api windows\api\core\inc\fmod_dsp_effects.h
+
+1564658068 c:\program files (x86)\fmod soundsystem\fmod studio api windows\api\core\inc\fmod_output.h
 
