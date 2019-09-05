@@ -26,14 +26,13 @@ int headerReader(fileHeader*, FILE*);
 int fileCut(FILE*,FILE* , int, int, fileHeader*);
 int copyHeaderToNewFile(FILE*, FILE*);
 int checkBlock(char*, int);
-void menu(){
+void menu(void){
     system("cls");
     puts("1 - Exibir infos do arquivo.");
     puts("2 - Cortar o arquivo.");
     puts("3 - Sair.");
 }
 void displayInfo(int, int, char);
-void stringConcatenate(char*, char*);
 void getTime(int*, int*);
 
 
@@ -45,23 +44,24 @@ int main (void){
     char fileName[100], fileXName[100];
     puts("Entre com o nome do arquivo");
     gets(fileName);
-    stringConcatenate(fileName, fileXName);
-    if((originalFile = fopen(strcat(fileName, ".wav") ,"rb")) == NULL){
+    strcpy(fileXName, fileName);
+    if((originalFile = fopen(strcat(fileName, ".wav") ,"rb")) == NULL){ // abre e testa se o arquivo foi aberto corretamente
         perror("Aconteceu o seguinte erro: ");
         return -1;
     }
-    if((file_x = fopen(strcat(fileXName, "_x.wav"), "wb")) == NULL){
+    if((file_x = fopen(strcat(fileXName, "_x.wav"), "wb")) == NULL){ // abre e testa se o arquivo foi aberto corretamente
         perror("Aconteceu o seguinte erro ao criar o arquivo. ");
         return -1;
     }
-    switch (headerReader(&cabecalho, originalFile)){
-    case -1:
+    switch (headerReader(&cabecalho, originalFile)){ // lê o cabeçalho e retorna um erro
+    case -1: // erro de leitura
         puts("Houve um erro na leitura do arquivo");
-    case -2:
+        return -1;
+    case -2: // arquivo não contém riff
         puts("Este arquivo não tem RIFF.");
         return -2;
         break;
-    case -3:
+    case -3: // arquivo não é do tipo wave
         puts("Este arquivo não é do tipo WAVE.");
         return -3;
         break;
@@ -77,28 +77,28 @@ int main (void){
     int ctrl;
     do{
         menu();
-        ctrl = getch() - '0';
+        ctrl = getch() - '0'; // pega a opção do menu
         switch(ctrl){
         case 1:
-            displayInfo(cabecalho.chunkID, sizeof(int), 'C');
-            displayInfo(cabecalho.chunkSize, sizeof(int), 'I');
-            displayInfo(cabecalho.sampleRate, sizeof(int), 'I');
-            displayInfo(cabecalho.byteRate, sizeof(int), 'I');
+            displayInfo(cabecalho.chunkID, sizeof(int), 'C'); // mostrta o conteudo de chunckId
+            displayInfo(cabecalho.chunkSize, sizeof(int), 'I');// mostra o tamanho total do arquivo
+            displayInfo(cabecalho.sampleRate, sizeof(int), 'I'); // mostra o sample rate
+            displayInfo(cabecalho.byteRate, sizeof(int), 'I'); // mostra o byte rate
             puts("\nPressione qualquer tecla para continuar.");
             getch();
             break;
         case 2:
             puts("Entre com o tempo desejado para o corte em segundos.(inical e final)");
             int initialTime, finalTime;
-            getTime(&initialTime, &finalTime);
-            switch(fileCut(originalFile, file_x, initialTime, finalTime, &cabecalho)){
-            case -1:
+            getTime(&initialTime, &finalTime); // pega os tempos para cortar o arquivo
+            switch(fileCut(originalFile, file_x, initialTime, finalTime, &cabecalho)){ // corta o arquivo e se houver um erro retorna esse erro
+            case -1: // erro de leitura
                 puts("Houve algum erro com a letirura do arquivo");
                 break;
-            case -2:
+            case -2: // erro de escrita no novo arquivo
                 puts("Houve algum erro na escrita no arquivo");
                 break;
-            default:
+            default: // se não houver nenhum erro irá mostrar uma imagem
                 puts("Corte completo, aperte qualquer tecla para continuar");
                 break;
                 getch();
@@ -110,35 +110,25 @@ int main (void){
     fclose(file_x);
 
 }
+
 void getTime(int *initialTime, int *finalTime){
     do{
-        if(*initialTime >= *finalTime){
+        scanf("%d", initialTime);
+        scanf("%d", finalTime);
+        if(*initialTime >= *finalTime){ // se tempo final for menor que o final pede para o usuário colocar final maior que final
             system("cls");
             puts("Insira primeiro o tempo inicial e depois o final.");
-        }else if(*finalTime > 220){
+        }else if(*finalTime > 220){ // tempo máximo da música
             system("cls");
             puts("insira um tempo final menor que 220 segundos");
         }
-        scanf("%d", initialTime);
-        scanf("%d", finalTime);
     }while((*initialTime >= *finalTime) || (*finalTime > 220));
 
 }
 
-void stringConcatenate(char *str, char *newstr){
-    int i = 0;
-    while(*(str + i) != '\0'){
-        *(newstr + i) = *(str + i);
-        i++;
-        if(*(str + i) == '\0'){
-            *(newstr + i) = '\0';
-        }
-    }
-}
-
-int GetIntValue(char *arr, int size){  // transforma um little endian em um big endian e atribui o resultado em um inteiro
+int GetIntValue(char *arr, int size){  // transforma um big endian em um little endian e atribui o resultado em um inteiro
     int i = size - 1; // define quantos ciclos serão necessarios
-    int value = 0;
+    int value = 0; // valor de retorno
     while(i >= 0 && (*(arr + i) == 0)){ //testa para descobrir o primeiro valor não nulo e sua posição
         i--;
     }
@@ -149,7 +139,7 @@ int GetIntValue(char *arr, int size){  // transforma um little endian em um big 
     return value; // retorna o valor de value
 }
 
-int checkBlock(char *info, int infoToCompare){
+int checkBlock(char *info, int infoToCompare){ // checa a informação contida em um bloco, se não for a esperada retorna um erro
     if((*info != ((infoToCompare >> 24) & 0xff)) || (*(info + 1) != ((infoToCompare >> 16) & 0xff)) || (*(info + 2) != ((infoToCompare >> 8) & 0xff)) || (*(info + 3) != (infoToCompare  & 0xff)))
         return -1;
     else
@@ -244,9 +234,8 @@ void displayInfo(int infoInt, int _size, char type){
     puts("");
 }
 
-int copyHeaderToNewFile(FILE* originalFile, FILE* newFile){
+int copyHeaderToNewFile(FILE* originalFile, FILE* newFile){ // copia o cabeçalho para um novo arquivo
     char info;
-    rewind(originalFile);
     for(int i = 0; i < HEADER; i++){
         if(fread(&info, sizeof(char), 1, originalFile) != 1)
             return -1;
