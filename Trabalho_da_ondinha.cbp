@@ -15,6 +15,7 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
+					<Add option="-lwinmm" />
 					<Add library="../../../../../../../../Program Files (x86)/FMOD SoundSystem/FMOD Studio API Windows/api/core/inc/fmod.h" />
 					<Add library="../../../../../../../../Program Files (x86)/FMOD SoundSystem/FMOD Studio API Windows/api/core/lib/x86/libfmod.a" />
 				</Linker>

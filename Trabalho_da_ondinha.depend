@@ -1,11 +1,13 @@
 # depslib dependency file v1.0
-1567286322 source:c:\users\junio\documents\trô-3°-ano\programations\c segundo terceiro ano\pegando onda kkj\trabalho_da_ondinha\pegando_onda.c
+1568327571 source:c:\users\junio\documents\trô-3°-ano\programations\c segundo terceiro ano\pegando onda kkj\trabalho_da_ondinha\pegando_onda.c
 	<stdlib.h>
 	<stdio.h>
 	<conio.h>
 	<string.h>
 	<locale.h>
 	<string.h>
+	<windows.h>
+	<mmsystem.h>
 
 1564658068 c:\program files (x86)\fmod soundsystem\fmod studio api windows\api\core\inc\fmod.h
 	"fmod_common.h"
